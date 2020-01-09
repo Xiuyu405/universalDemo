@@ -35,7 +35,6 @@ public class MyApplication extends Application {
     }
 
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -102,9 +101,11 @@ public class MyApplication extends Application {
         DaoMaster daoMaster = new DaoMaster(database);
         daoSession = daoMaster.newSession();
     }
+
     public static DaoSession getDaoSession() {
         return daoSession;
     }
+
     //------------------------------------------------结束------------------------
     public static Context getInstance() {
         return mContext;
