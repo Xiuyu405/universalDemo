@@ -22,20 +22,21 @@ import com.example.crashapp.R;
 import com.example.crashapp.service.Presenter.BasePresenter;
 import com.example.crashapp.service.Presenter.MvpPresenter;
 import com.example.crashapp.service.View.BaseView;
+import com.example.crashapp.service.View.MvpView;
 import com.example.crashapp.ui.fragment.BaseFragment;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
 
-public abstract class BaseActivity extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatActivity implements MvpView {
     private ProgressDialog mProgressDialog;
-    private MvpPresenter mvpPresenter;
     FragmentManager fragmentManager;
+
 
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
         ButterKnife.bind(this);
-        mvpPresenter = new MvpPresenter();
     }
 
     @Override
@@ -121,8 +122,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     protected void onDestroy() {
         super.onDestroy();
         if (getPresenter() != null) {
+            Log.e("tag", "onDestroy: +解除当前绑定" );
             getPresenter().detachView();
-            mvpPresenter.onStop();
+            MvpPresenter.onStop();
         }
     }
     /*----------------FrgmentManager--------/

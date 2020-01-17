@@ -1,15 +1,14 @@
 package com.example.crashapp.ui;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.crashapp.MyApplication;
-import com.example.crashapp.gen.UserInformationDao;
-import com.example.crashapp.service.entity.BaseBean;
 import com.example.crashapp.service.entity.UserInformation;
+import com.example.crashapp.service.entity.listBean;
 import com.example.crashapp.ui.activity.BaseActivity;
 import com.example.crashapp.service.Presenter.BasePresenter;
 import com.example.crashapp.R;
@@ -17,12 +16,10 @@ import com.example.crashapp.service.Presenter.MvpPresenter;
 import com.example.crashapp.service.View.MvpView;
 import com.example.crashapp.service.entity.BookBean;
 import com.example.crashapp.service.entity.ReadBean;
+import com.example.crashapp.ui.activity.LoginActivity;
 import com.example.crashapp.util.DaoSessionUtils;
 import com.example.crashapp.util.NewImageLoader;
 
-import org.greenrobot.greendao.AbstractDao;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,7 +37,7 @@ public class MainActivity extends BaseActivity implements MvpView {
     @BindView(R.id.tv_4)
     TextView mt4;
 
-    String imurl = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1578285746496&di=d5b5abf8118cfa655933dcfb19013c11&imgtype=0&src=http%3A%2F%2Fk.zol-img.com.cn%2Fwallpaper%2F7056%2F7055706_0540.jpg";
+    String imurl ="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579090643083&di=e9e97c2f57c06f42c849f60fa1dfeeff&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20150818%2Fmp28084935_1439889383180_5.jpeg";
     ProgressDialog progressDialog;
     MvpPresenter presenter;
     UserInformation userInformation;
@@ -80,8 +77,9 @@ public class MainActivity extends BaseActivity implements MvpView {
             Log.e("Ddddd", "t4: " + baseBeans.get(i).getUserIsExist());
         }
     }
+
     @OnClick(R.id.tv_4)
-    public void t4(){
+    public void t4() {
         userInformation.setUserId(9);
         userInformation.setUserName("asdadas");
         userInformation.setUserIsExist(true);
@@ -106,24 +104,31 @@ public class MainActivity extends BaseActivity implements MvpView {
 
     // button 点击事件调用方法
     public void getData() {
-        presenter.getSearchBooks("金瓶梅", null, 0, 1);
+        startActivity(new Intent(this,LoginActivity.class));
     }
 
     // button 点击事件调用方法
     public void getData2() {
-        presenter.getReadBooks("金瓶梅", null, 0, 1);
+//        presenter.getReadBooks("金瓶梅", null, 0, 1);
+        presenter.getSearchList(0);
     }
 
+
+
     @Override
-    public void onSuccess(Object mBook) {
-        if (mBook instanceof BookBean) {
-            BookBean book = (BookBean) mBook;
+    public void onSuccess(Object bean) {
+        if (bean instanceof BookBean) {
+            BookBean book = (BookBean) bean;
             mt.setText(book.getMsg());
-        } else if (mBook instanceof ReadBean) {
-            ReadBean rbook = (ReadBean) mBook;
+        } else if (bean instanceof ReadBean) {
+            ReadBean rbook = (ReadBean) bean;
             mt2.setText(rbook.getMsg());
+        }else if (bean instanceof listBean){
+            mt2.setText(((listBean) bean).getData().getCurPage()+"");
         }
     }
+
+
 
     @Override
     public void onError(String result) {

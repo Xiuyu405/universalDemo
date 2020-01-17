@@ -2,6 +2,8 @@ package com.example.crashapp.service.View;
 
 import android.content.Context;
 
+import com.trello.rxlifecycle3.LifecycleTransformer;
+
 public interface BaseView {
     /**
      * 显示正在加载进度框
@@ -27,6 +29,9 @@ public interface BaseView {
      * 显示请求错误提示
      */
     void showErr();
+
+    <T> LifecycleTransformer<T> bindToLifecycle();
+
 
     Context getContext();
 }

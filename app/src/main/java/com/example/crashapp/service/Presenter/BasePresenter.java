@@ -4,15 +4,14 @@ import android.content.Context;
 
 import com.example.crashapp.service.View.BaseView;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 public class BasePresenter<V extends BaseView> {
 
     Context pcontext;
+    private CompositeDisposable compositeDisposable;
 
-    void onCreate() {
-    }
-
-    void onStop() {
-    }
 
     ;
     /**
@@ -29,6 +28,9 @@ public class BasePresenter<V extends BaseView> {
     public void attachView(V mvpView, Context context) {
         this.mvpView = mvpView;
         this.pcontext = context;
+        if (compositeDisposable != null) {
+            compositeDisposable.clear();
+        }
     }
 
     /**
@@ -57,4 +59,10 @@ public class BasePresenter<V extends BaseView> {
         return pcontext;
     }
 
+    protected void addSubscribe(Disposable disposable) {
+        if (compositeDisposable == null) {
+            compositeDisposable = new CompositeDisposable();
+        }
+        compositeDisposable.add(disposable);
+    }
 }

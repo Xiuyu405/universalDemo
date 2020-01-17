@@ -6,8 +6,10 @@ import com.example.crashapp.service.RetrofitHelper;
 import com.example.crashapp.service.RetrofitService;
 import com.example.crashapp.service.entity.BookBean;
 import com.example.crashapp.service.entity.ReadBean;
+import com.example.crashapp.service.entity.listBean;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 public class DataManager {
     private RetrofitService mRetrofitService;
@@ -21,5 +23,8 @@ public class DataManager {
 
     public Observable<ReadBean> getSreaadBook(String name, String tag, int start, int count){
         return mRetrofitService.getSreaadBook(name,tag,start,count);
+    }
+    public Observable<listBean> getFeedArticleList(int num){
+        return mRetrofitService.getFeedArticleList(num);
     }
 }

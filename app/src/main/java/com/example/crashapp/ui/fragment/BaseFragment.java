@@ -11,8 +11,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.crashapp.ui.activity.BaseActivity;
 import com.example.crashapp.service.View.BaseView;
+import com.trello.rxlifecycle3.components.support.RxFragment;
 
-public abstract class BaseFragment extends Fragment implements BaseView {
+public abstract class BaseFragment extends RxFragment implements BaseView {
     private BaseActivity mActivity;
     private View mLayoutView;
 
