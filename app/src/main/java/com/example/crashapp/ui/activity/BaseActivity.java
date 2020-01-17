@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.CheckResult;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -24,14 +25,22 @@ import com.example.crashapp.service.Presenter.MvpPresenter;
 import com.example.crashapp.service.View.BaseView;
 import com.example.crashapp.service.View.MvpView;
 import com.example.crashapp.ui.fragment.BaseFragment;
+import com.example.crashapp.util.ActivityLifeProvider;
+import com.trello.rxlifecycle3.LifecycleTransformer;
+import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.schedulers.Schedulers;
 
-public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatActivity implements MvpView {
+//RxAppCompatActivity
+public abstract class BaseActivity extends AppCompatActivity implements BaseView {
     private ProgressDialog mProgressDialog;
     FragmentManager fragmentManager;
-
+    protected ActivityLifeProvider lifeProvider = new ActivityLifeProvider();
 
     @Override
     public void setContentView(View view) {
@@ -78,8 +87,15 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
         if (getPresenter() != null) {
             getPresenter().attachView(this, getContext());
         }
+        lifeProvider.onNext(ActivityEvent.CREATE);
         initView();
         initData();
+    }
+
+
+    @Override
+    public  <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
+        return lifeProvider.bindUntilEvent(event);
     }
 
     private void initData() {
@@ -88,7 +104,51 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
         mProgressDialog.setCancelable(false);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        lifeProvider.onNext(ActivityEvent.START);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        lifeProvider.onNext(ActivityEvent.RESUME);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        lifeProvider.onNext(ActivityEvent.PAUSE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        lifeProvider.onNext(ActivityEvent.STOP);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        lifeProvider.onNext(ActivityEvent.DESTROY);
+        if (getPresenter() != null) {
+            Log.e("tag", "onDestroy: +解除当前绑定");
+            getPresenter().detachView();
+//            MvpPresenter.onStop();
+        }
+    }
+
+
+    /**
+     * -------------other--------------------------
+     */
+//    public static <T> ObservableTransformer<T, T> transform(final BaseView view) {
+//        return observable -> observable.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .compose(view.bindToLifecycle());
+//    }
     @Override
     public void showLoading() {
         if (!mProgressDialog.isShowing()) {
@@ -118,15 +178,13 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
         return BaseActivity.this;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (getPresenter() != null) {
-            Log.e("tag", "onDestroy: +解除当前绑定" );
-            getPresenter().detachView();
-            MvpPresenter.onStop();
-        }
-    }
+
+
+
+
+
+
+
     /*----------------FrgmentManager--------/
 
      */

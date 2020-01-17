@@ -3,6 +3,7 @@ package com.example.crashapp.service;
 import android.app.backup.RestoreObserver;
 import android.text.TextUtils;
 
+import com.example.crashapp.service.View.BaseView;
 import com.example.crashapp.service.View.MvpView;
 
 import io.reactivex.observers.ResourceObserver;

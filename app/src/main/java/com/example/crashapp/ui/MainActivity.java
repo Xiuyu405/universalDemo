@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.crashapp.service.View.BaseView;
 import com.example.crashapp.service.entity.UserInformation;
 import com.example.crashapp.service.entity.listBean;
 import com.example.crashapp.ui.activity.BaseActivity;

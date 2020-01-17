@@ -24,11 +24,11 @@ public class RxBus {
     private final Relay<Object> mBus;
     private final Map<Class<?>, Object> mStickyEventMap;
 
-    public static <T> ObservableTransformer<T, T> transform(final BaseView view) {
-        return observable -> observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.bindToLifecycle());
-    }
+//    public static <T> ObservableTransformer<T, T> transform(final BaseView view) {
+//        return observable -> observable.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .compose(view.bindToLifecycle());
+//    }
 
 
 

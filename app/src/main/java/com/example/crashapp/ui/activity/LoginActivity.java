@@ -5,6 +5,7 @@ import android.widget.TextView;
 import com.example.crashapp.R;
 import com.example.crashapp.service.Presenter.BasePresenter;
 import com.example.crashapp.service.Presenter.MvpPresenter;
+import com.example.crashapp.service.View.BaseView;
 import com.example.crashapp.service.View.MvpView;
 import com.example.crashapp.service.entity.listBean;
 

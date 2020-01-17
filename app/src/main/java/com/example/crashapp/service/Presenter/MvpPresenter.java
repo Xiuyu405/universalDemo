@@ -1,21 +1,26 @@
 package com.example.crashapp.service.Presenter;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.crashapp.service.BaseObserver;
+import com.example.crashapp.service.View.BaseView;
 import com.example.crashapp.service.View.MvpView;
 import com.example.crashapp.service.entity.BookBean;
 import com.example.crashapp.service.Manager.DataManager;
 import com.example.crashapp.service.entity.ReadBean;
 import com.example.crashapp.service.entity.listBean;
+import com.example.crashapp.ui.activity.BaseActivity;
 import com.example.crashapp.util.RxBus;
 import com.trello.rxlifecycle3.RxLifecycle;
+import com.trello.rxlifecycle3.android.ActivityEvent;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -33,12 +38,11 @@ public class MvpPresenter extends BasePresenter<MvpView> {
         mCompositeSubscription = new CompositeDisposable();
     }
 
-
     public void getSearchBooks(String name, String tag, int start, int count) {
         addSubscribe(manager.createUser(name, tag, start, count)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new BaseObserver<BookBean>(getView(),"error1"){
+                .subscribeWith(new BaseObserver<BookBean>( getView(),"error1"){
                     @Override
                     public void onNext(BookBean bookBean) {
                         super.onNext(bookBean);
@@ -49,14 +53,15 @@ public class MvpPresenter extends BasePresenter<MvpView> {
 
     public void getSearchList(int num) {
         addSubscribe(manager.getFeedArticleList(num)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxBus.transform(getView()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+//                .compose(RxBus.getDefault().transform(getView()))
+                .compose(this.getView().<listBean>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribeWith(new BaseObserver<listBean>(getView(),"error1"){
                     @Override
                     public void onNext(listBean bookBean) {
                         super.onNext(bookBean);
-                        getView().onSuccess(bookBean);
+                       getView().onSuccess(bookBean);
                     }
                 }));
 

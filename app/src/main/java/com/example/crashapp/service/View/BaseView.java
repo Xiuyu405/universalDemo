@@ -3,6 +3,7 @@ package com.example.crashapp.service.View;
 import android.content.Context;
 
 import com.trello.rxlifecycle3.LifecycleTransformer;
+import com.trello.rxlifecycle3.android.ActivityEvent;
 
 public interface BaseView {
     /**
@@ -30,8 +31,12 @@ public interface BaseView {
      */
     void showErr();
 
-    <T> LifecycleTransformer<T> bindToLifecycle();
+//    void onSuccess(T bean);
+//
+//    void onError(String result);
 
+//    <T> LifecycleTransformer<T> bindToLifecycle();
+<T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event);
 
     Context getContext();
 }
