@@ -12,7 +12,6 @@ import com.example.crashapp.service.entity.ReadBean;
 import com.example.crashapp.service.entity.listBean;
 import com.example.crashapp.ui.activity.BaseActivity;
 import com.example.crashapp.util.RxBus;
-import com.trello.rxlifecycle3.RxLifecycle;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 
 import java.util.concurrent.TimeUnit;
@@ -32,6 +31,7 @@ public class MvpPresenter extends BasePresenter<MvpView> {
     private DataManager manager;
     private static CompositeDisposable mCompositeSubscription;
     private ReadBean readBean;
+
     public MvpPresenter() {
         Log.e("tag", 222222 + "");
         manager = new DataManager(getContext());
@@ -42,7 +42,7 @@ public class MvpPresenter extends BasePresenter<MvpView> {
         addSubscribe(manager.createUser(name, tag, start, count)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new BaseObserver<BookBean>( getView(),"error1"){
+                .subscribeWith(new BaseObserver<BookBean>(getView(), "error") {
                     @Override
                     public void onNext(BookBean bookBean) {
                         super.onNext(bookBean);
@@ -53,15 +53,16 @@ public class MvpPresenter extends BasePresenter<MvpView> {
 
     public void getSearchList(int num) {
         addSubscribe(manager.getFeedArticleList(num)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
 //                .compose(RxBus.getDefault().transform(getView()))
+                .compose(RxBus.getDefault().transform())
                 .compose(this.getView().<listBean>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribeWith(new BaseObserver<listBean>(getView(),"error1"){
+                .subscribeWith(new BaseObserver<listBean>(getView(), "error1") {
                     @Override
                     public void onNext(listBean bookBean) {
                         super.onNext(bookBean);
-                       getView().onSuccess(bookBean);
+                        getView().onSuccess(bookBean);
                     }
                 }));
 
@@ -71,7 +72,7 @@ public class MvpPresenter extends BasePresenter<MvpView> {
         addSubscribe(manager.getSreaadBook(name, tag, start, count)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new BaseObserver<ReadBean>(getView(),"error"){
+                .subscribeWith(new BaseObserver<ReadBean>(getView(), "error") {
                     @Override
                     public void onNext(ReadBean readBean) {
                         if (isViewAttached() && readBean != null) {
@@ -86,7 +87,7 @@ public class MvpPresenter extends BasePresenter<MvpView> {
 
 
     public static void onStop() {
-        if (!mCompositeSubscription.isDisposed()&&mCompositeSubscription !=null) {
+        if (!mCompositeSubscription.isDisposed() && mCompositeSubscription != null) {
             Log.e("tag", "onStop: =============================mCompositeSubscription解除");
             mCompositeSubscription.dispose();
         }

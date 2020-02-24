@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements MvpView {
     @BindView(R.id.tv_4)
     TextView mt4;
 
-    String imurl ="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579090643083&di=e9e97c2f57c06f42c849f60fa1dfeeff&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20150818%2Fmp28084935_1439889383180_5.jpeg";
+    String imurl = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579090643083&di=e9e97c2f57c06f42c849f60fa1dfeeff&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20150818%2Fmp28084935_1439889383180_5.jpeg";
     ProgressDialog progressDialog;
     MvpPresenter presenter;
     UserInformation userInformation;
@@ -105,15 +105,13 @@ public class MainActivity extends BaseActivity implements MvpView {
 
     // button 点击事件调用方法
     public void getData() {
-        startActivity(new Intent(this,LoginActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     // button 点击事件调用方法
     public void getData2() {
-//        presenter.getReadBooks("金瓶梅", null, 0, 1);
         presenter.getSearchList(0);
     }
-
 
 
     @Override
@@ -124,11 +122,10 @@ public class MainActivity extends BaseActivity implements MvpView {
         } else if (bean instanceof ReadBean) {
             ReadBean rbook = (ReadBean) bean;
             mt2.setText(rbook.getMsg());
-        }else if (bean instanceof listBean){
-            mt2.setText(((listBean) bean).getData().getCurPage()+"");
+        } else if (bean instanceof listBean) {
+            mt2.setText(((listBean) bean).getData().getCurPage() + "");
         }
     }
-
 
 
     @Override

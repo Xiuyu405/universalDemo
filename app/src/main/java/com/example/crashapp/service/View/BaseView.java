@@ -35,8 +35,9 @@ public interface BaseView {
 //
 //    void onError(String result);
 
-//    <T> LifecycleTransformer<T> bindToLifecycle();
-<T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event);
+    //    <T> LifecycleTransformer<T> bindToLifecycle();
+    //用于将一个RXJava的观察者回调绑定到主导器的一个事件上
+    <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event);
 
     Context getContext();
 }

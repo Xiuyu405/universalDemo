@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.example.crashapp.service.View.BaseView;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.jakewharton.rxrelay2.Relay;
-import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.trello.rxlifecycle3.android.ActivityEvent;
 import com.trello.rxlifecycle3.android.FragmentEvent;
 
@@ -24,15 +23,15 @@ public class RxBus {
     private final Relay<Object> mBus;
     private final Map<Class<?>, Object> mStickyEventMap;
 
-//    public static <T> ObservableTransformer<T, T> transform(final BaseView view) {
+    //    public static <T> ObservableTransformer<T, T> transform(final BaseView view) {
 //        return observable -> observable.subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .compose(view.bindToLifecycle());
 //    }
-
-
-
-
+    public static <T> ObservableTransformer<T, T> transform() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
 
     private RxBus() {

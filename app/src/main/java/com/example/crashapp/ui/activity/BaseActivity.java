@@ -12,29 +12,20 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.annotation.CheckResult;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.crashapp.MyApplication;
 import com.example.crashapp.R;
 import com.example.crashapp.service.Presenter.BasePresenter;
-import com.example.crashapp.service.Presenter.MvpPresenter;
 import com.example.crashapp.service.View.BaseView;
-import com.example.crashapp.service.View.MvpView;
 import com.example.crashapp.ui.fragment.BaseFragment;
 import com.example.crashapp.util.ActivityLifeProvider;
 import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.trello.rxlifecycle3.android.ActivityEvent;
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
-import io.reactivex.ObservableTransformer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.schedulers.Schedulers;
 
 //RxAppCompatActivity
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
@@ -92,9 +83,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         initData();
     }
 
-
+    //设定Rxjava跟随Activity指定周期解除绑定
     @Override
-    public  <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
+    public <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
         return lifeProvider.bindUntilEvent(event);
     }
 
@@ -107,6 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onStart() {
         super.onStart();
+        //把当前生Activity命周期发送
         lifeProvider.onNext(ActivityEvent.START);
     }
 

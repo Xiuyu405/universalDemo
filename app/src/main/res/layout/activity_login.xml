@@ -3,13 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 <TextView
-    android:id="@+id/tv_back"
+    android:id="@+id/tv_login_back"
     android:layout_width="200dp"
     android:layout_height="50dp"
     android:text="back"
     />
     <TextView
-        android:id="@+id/tv_ms"
+        android:id="@+id/tv_login_ms"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="message"

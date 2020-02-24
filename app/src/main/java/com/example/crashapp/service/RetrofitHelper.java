@@ -54,9 +54,9 @@ public class RetrofitHelper {
 //        }
 
         client = new OkHttpClient();
-//        client.interceptors().add(new HeaderInterceptor());
+        //添加请求头
+        client.interceptors().add(new HeaderInterceptor());
         client.newBuilder();
-//        client.interceptors().add()
         if (mRetrofit == null) {
             mRetrofit = new Retrofit.Builder()
                     .baseUrl("https://www.wanandroid.com")

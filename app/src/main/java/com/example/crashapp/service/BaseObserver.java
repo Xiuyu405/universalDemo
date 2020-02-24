@@ -8,26 +8,26 @@ import com.example.crashapp.service.View.MvpView;
 
 import io.reactivex.observers.ResourceObserver;
 
-public  class BaseObserver <T> extends ResourceObserver<T> {
+public class BaseObserver<T> extends ResourceObserver<T> {
     private MvpView mView;
     private String mErrorMsg;
     private boolean isShowError = true;
 
-    protected BaseObserver(MvpView view){
+    protected BaseObserver(MvpView view) {
         this.mView = view;
     }
 
-    protected BaseObserver(MvpView view, String errorMsg){
+    protected BaseObserver(MvpView view, String errorMsg) {
         this.mView = view;
         this.mErrorMsg = errorMsg;
     }
 
-    protected BaseObserver(MvpView view, boolean isShowError){
+    protected BaseObserver(MvpView view, boolean isShowError) {
         this.mView = view;
         this.isShowError = isShowError;
     }
 
-    protected BaseObserver(MvpView view, String errorMsg, boolean isShowError){
+    protected BaseObserver(MvpView view, String errorMsg, boolean isShowError) {
         this.mView = view;
         this.mErrorMsg = errorMsg;
         this.isShowError = isShowError;

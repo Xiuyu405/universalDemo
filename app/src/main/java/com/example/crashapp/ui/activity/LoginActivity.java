@@ -13,12 +13,13 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements MvpView {
-    @BindView(R.id.tv_back)
+    @BindView(R.id.tv_login_back)
     TextView tv_back;
-    @BindView(R.id.tv_ms)
+    @BindView(R.id.tv_login_ms)
     TextView tv_ms;
 
     MvpPresenter presenter;
+
     @Override
     public int setContentView() {
         return R.layout.activity_login;
@@ -41,8 +42,8 @@ public class LoginActivity extends BaseActivity implements MvpView {
 
     @Override
     public void onSuccess(Object bean) {
-        if (bean instanceof listBean){
-            tv_ms.setText(((listBean) bean).getData().getCurPage()+"");
+        if (bean instanceof listBean) {
+            tv_ms.setText(((listBean) bean).getData().getCurPage() + "");
         }
 
     }
@@ -51,12 +52,14 @@ public class LoginActivity extends BaseActivity implements MvpView {
     public void onError(String result) {
 
     }
-    @OnClick(R.id.tv_back)
+
+    @OnClick(R.id.tv_login_back)
     public void back() {
         finish();
     }
-    @OnClick(R.id.tv_ms)
-    public void message(){
+
+    @OnClick(R.id.tv_login_ms)
+    public void message() {
         presenter.getSearchList(0);
     }
 }

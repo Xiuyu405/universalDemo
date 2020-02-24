@@ -5,9 +5,6 @@ import android.content.Context;
 import androidx.annotation.CheckResult;
 
 import com.example.crashapp.service.View.BaseView;
-import com.example.crashapp.util.ActivityLifeProvider;
-import com.trello.rxlifecycle3.LifecycleTransformer;
-import com.trello.rxlifecycle3.android.ActivityEvent;
 
 import java.lang.ref.WeakReference;
 
@@ -34,11 +31,12 @@ public class BasePresenter<V extends BaseView> {
 //    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull ActivityEvent event) {
 //        return lifeProvider.bindUntilEvent(event);
 //    }
+
     /**
      * 绑定view，一般在初始化中调用该方法
      */
     public void attachView(V mvpView, Context context) {
-        this.mvpView =new WeakReference<>(mvpView);
+        this.mvpView = new WeakReference<>(mvpView);
         this.pcontext = context;
         if (compositeDisposable != null) {
             compositeDisposable.clear();
